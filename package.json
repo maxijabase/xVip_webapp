@@ -38,9 +38,11 @@
 	"dependencies": {
 		"@popperjs/core": "^2.11.8",
 		"@tailwindcss/postcss": "^4.0.5",
+		"axios": "^1.7.9",
 		"flowbite-svelte-blocks": "^1.1.4",
 		"flowbite-svelte-icons": "^2.0.2",
 		"jwt-decode": "^4.0.0",
+		"lucide-svelte": "^0.475.0",
 		"tailwind-merge": "^3.0.1"
 	}
 }

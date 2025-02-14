@@ -10,11 +10,7 @@
 	} from 'flowbite-svelte';
 	import { AngleDownOutline, AngleUpOutline, StarOutline } from 'flowbite-svelte-icons';
 
-	export let drawerHidden: boolean = false;
-
-	const closeDrawer = () => {
-		drawerHidden = true;
-	};
+	const { drawerHidden = $bindable(false) } = $props<{drawerHidden?: boolean}>();
 
 	let iconClass =
 		'flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white';
@@ -22,7 +18,7 @@
 		'flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700';
 	let groupClass = 'pt-2 space-y-2';
 
-	$: mainSidebarUrl = page.url.pathname;
+	let mainSidebarUrl: string = $state(page.url.pathname);
 	let activeMainSidebar: string;
 
 	let posts = [{ name: 'VIPs', icon: StarOutline, href: '/vip' }];
@@ -64,11 +60,3 @@
 		</nav>
 	</SidebarWrapper>
 </Sidebar>
-
-<div
-	hidden={drawerHidden}
-	class="fixed inset-0 z-20 bg-gray-900/50 dark:bg-gray-900/60"
-	on:click={closeDrawer}
-	on:keydown={closeDrawer}
-	role="presentation"
-></div>
