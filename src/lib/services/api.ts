@@ -1,53 +1,55 @@
-import { env } from '$env/dynamic/private';
+import { API_URL } from '$env/static/private';
+import { redirect } from '@sveltejs/kit';
 
-class ApiService {
-	private baseUrl: string;
+export class ApiService {
+  private baseUrl: string = API_URL;
+  private fetch: any;
 
-	constructor() {
-		this.baseUrl = env.API_URL || 'http://localhost:3000';
-	}
+  constructor(fetch: any) {
+    this.fetch = fetch;
+  }
 
-	private async fetch(endpoint: string, options: RequestInit = {}) {
-		const url = `${this.baseUrl}${endpoint}`;
-		const response = await fetch(url, {
-			...options,
-			headers: {
-				'Content-Type': 'application/json',
-				...options.headers
-			}
-		});
+  async get<T>(endpoint: string) {
+    console.log('endpoint', endpoint);
+    const res = await this.fetch(`${this.baseUrl}${endpoint}`, {
+      method: 'GET'
+    });
+    if (res.ok) {
+      return res.json() as Promise<T>;
+    }
 
-		if (!response.ok) {
-			throw new Error(`API call failed: ${response.statusText}`);
-		}
+    if (res.status === 303) {
+      console.log('redirecting...', endpoint);
+      redirect(303, '/auth/login');
+    }
+  }
 
-		return response.json();
-	}
+  async post<T>(endpoint: string, data: any) {
+    const res = await this.fetch(`${this.baseUrl}${endpoint}`, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      return res.json() as Promise<T>;
+    }
+  }
 
-	// Example methods
-	async get<T>(endpoint: string) {
-		return this.fetch(endpoint) as Promise<T>;
-	}
+  async put<T>(endpoint: string, data: any) {
+    const res = await this.fetch(`${this.baseUrl}${endpoint}`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    });
+    if (res.ok) {
+      return res.json() as Promise<T>;
+    }
+  }
 
-	async post<T>(endpoint: string, data: any) {
-		return this.fetch(endpoint, {
-			method: 'POST',
-			body: JSON.stringify(data)
-		}) as Promise<T>;
-	}
-
-	async put<T>(endpoint: string, data: any) {
-		return this.fetch(endpoint, {
-			method: 'PUT',
-			body: JSON.stringify(data)
-		}) as Promise<T>;
-	}
-
-	async delete<T>(endpoint: string) {
-		return this.fetch(endpoint, {
-			method: 'DELETE'
-		}) as Promise<T>;
-	}
+  async delete<T>(endpoint: string) {
+    const res = await this.fetch(`${this.baseUrl}${endpoint}`, {
+      method: 'DELETE'
+    });
+    if (res.ok) {
+      return res.json() as Promise<T>;
+    }
+  }
 }
-
-export const api = new ApiService();

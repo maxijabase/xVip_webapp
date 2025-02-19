@@ -1,9 +1,11 @@
-// See https://svelte.dev/docs/kit/types#app.d.ts
-// for information about these interfaces
+import { ApiService } from '@/services/api';
+
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
+		interface Locals {
+			apiService: ApiService
+		}
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}

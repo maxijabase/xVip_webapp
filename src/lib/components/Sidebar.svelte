@@ -1,30 +1,48 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import type { WebUser } from '@/models/webUser';
 
 	import {
 		Sidebar,
 		SidebarDropdownWrapper,
 		SidebarGroup,
 		SidebarItem,
-		SidebarWrapper
+		SidebarWrapper,
+		P
 	} from 'flowbite-svelte';
-	import { AngleDownOutline, AngleUpOutline, StarOutline } from 'flowbite-svelte-icons';
 
-	const { drawerHidden = $bindable(false) } = $props<{drawerHidden?: boolean}>();
+	import { Star, ChevronDown, ChevronUp, ShoppingBag } from 'lucide-svelte';
+
+	const { drawerHidden = $bindable(false), data } = $props<{
+		drawerHidden?: boolean;
+		data: WebUser;
+	}>();
 
 	let iconClass =
 		'flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white';
 	let itemClass =
 		'flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700';
-	let groupClass = 'pt-2 space-y-2';
+	let groupClass = 'py-2 space-y-2';
 
 	let mainSidebarUrl: string = $state(page.url.pathname);
 	let activeMainSidebar: string;
 
-	let posts = [{ name: 'VIPs', icon: StarOutline, href: '/vip' }];
+	interface NavItems {
+		name: string;
+		icon: any;
+		children?: NavItems[];
+		href?: string;
+	}
 
-	let dropdowns = Object.fromEntries(Object.keys(posts).map((x) => [x, false]));
-	
+	let userItems: NavItems[] = [
+		{
+			name: 'VIPs',
+			icon: Star,
+			href: '/vip'
+		}
+	];
+
+	let dropdowns = Object.fromEntries(Object.keys(userItems).map((x) => [x, false]));
 </script>
 
 <Sidebar
@@ -37,24 +55,15 @@
 		divClass="overflow-y-auto px-3 pt-20 lg:pt-5 h-full bg-white scrolling-touch max-w-2xs lg:h-[calc(100vh-4rem)] lg:block dark:bg-gray-800 lg:sticky top-2"
 	>
 		<nav class="divide-y divide-gray-200 dark:divide-gray-700">
-			<!-- Normal app items -->
-			<SidebarGroup ulClass={groupClass}>
-				{#each posts as { name, icon, children, href } (name)}
-					{#if children}
-						<SidebarDropdownWrapper bind:isOpen={dropdowns[name]} label={name} class="pr-3">
-							<AngleDownOutline slot="arrowdown" strokeWidth="3.3" size="sm" />
-							<AngleUpOutline slot="arrowup" strokeWidth="3.3" size="sm" />
-							<svelte:component this={icon} slot="icon" class={iconClass} />
-
-							{#each Object.entries(children) as [title, href]}
-								<SidebarItem label={title} {href} spanClass="ml-9" class={itemClass} />
-							{/each}
-						</SidebarDropdownWrapper>
-					{:else}
-						<SidebarItem label={name} {href} spanClass="ml-3" class={itemClass}>
-							<svelte:component this={icon} slot="icon" class={iconClass} />
-						</SidebarItem>
-					{/if}
+			<!-- User items -->
+			<SidebarGroup>
+				<P>VIP</P>
+				{#each userItems as item, i (item.name)}
+					<SidebarItem label={item.name} href={item.href} class={itemClass}>
+						<svelte:fragment slot="icon">
+							<item.icon class={iconClass} />
+						</svelte:fragment>
+					</SidebarItem>
 				{/each}
 			</SidebarGroup>
 		</nav>
