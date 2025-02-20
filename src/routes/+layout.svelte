@@ -7,8 +7,6 @@
 
   let { data, children }: LayoutProps = $props();
   let drawerHidden = $state(true);
-
-  // Since data is the user object directly from layout.server.ts
   let user = $state(data as WebUser | undefined);
 </script>
 

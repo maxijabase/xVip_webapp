@@ -1,3 +1,5 @@
+import type { Role } from "./role";
+
 export interface WebUser {
   steamid: string;
   communityvisibilitystate: number;
@@ -18,4 +20,3 @@ export interface WebUser {
   role: Role;
 }
 
-export type Role = 'owner' | 'admin' | 'user';
