@@ -13,10 +13,10 @@
 
 	import { Star, ChevronDown, ChevronUp, ShoppingBag } from 'lucide-svelte';
 
-	const { drawerHidden = $bindable(false), data } = $props<{
-		drawerHidden?: boolean;
-		data: WebUser;
-	}>();
+	const { drawerHidden = $bindable(false), user } = $props<{
+    drawerHidden?: boolean;
+    user?: WebUser;  // Make user optional
+  }>();
 
 	let iconClass =
 		'flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white';
