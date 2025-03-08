@@ -57,6 +57,7 @@
     <nav class="divide-y divide-gray-200 dark:divide-gray-700">
       <!-- User items -->
       <SidebarGroup>
+        <P>VIP</P>
         {#each userItems as item, i (item.name)}
           <SidebarItem label={item.name} href={item.href} class={itemClass}>
             <svelte:fragment slot="icon">
