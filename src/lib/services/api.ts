@@ -10,7 +10,6 @@ export class ApiService {
   }
 
   async get<T>(endpoint: string) {
-    console.log('endpoint', endpoint);
     const res = await this.fetch(`${this.baseUrl}${endpoint}`, {
       method: 'GET'
     });
@@ -19,7 +18,6 @@ export class ApiService {
     }
 
     if (res.status === 303) {
-      console.log('redirecting...', endpoint);
       redirect(303, '/auth/login');
     }
   }

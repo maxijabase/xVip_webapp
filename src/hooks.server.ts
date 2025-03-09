@@ -14,10 +14,8 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
   }
   const response = await fetch(request);
   if (response.status === 401) {
-    console.log('error 401 in endpoint', request.url);
     event.cookies.set('returnTo', event.url.pathname, { path: '/' });
     return redirect(303, '/auth/login');
   }
-  console.log('returning response normally...');
   return response;
 };

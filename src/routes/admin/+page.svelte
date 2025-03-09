@@ -1,27 +1,28 @@
 <script lang="ts">
+  import { Heading } from 'flowbite-svelte';
+  import AdminList from '@/components/AdminList.svelte';
   import type { PageData } from './$types';
+  import type { WebAdmin } from '@/models/webAdmin';
 
   let { data }: { data: PageData } = $props();
   let admins = $state(data.admins ?? []);
+  let user = $state(data.user);
+
+  async function handleAdminUpdate(admin: WebAdmin) {
+    // TODO
+  }
+
+  async function handleAdminDelete(admin: WebAdmin) {
+    // TODO
+  }
 </script>
 
 <div class="container mx-auto">
-  <h1 class="text-2xl font-semibold">Admins</h1>
-  <div class="mt-4 flex flex-col">
-    {#each admins as admin}
-      <div
-        class="flex items-center justify-between rounded-lg border border-gray-200 p-4 dark:border-gray-700"
-      >
-        <div class="flex items-center">
-          <img src="/default-avatar.png" alt={admin.name} class="h-10 w-10 rounded-full" />
-          <div class="ml-4">
-            <p class="text-lg font-semibold">{admin.name}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-              {admin.steamid}
-            </p>
-          </div>
-        </div>
-      </div>
-    {/each}
-  </div>
+  <Heading>Admins</Heading>
+  <AdminList 
+    admins={admins} 
+    user={user} 
+    onUpdate={handleAdminUpdate}
+    onDelete={handleAdminDelete}
+  />
 </div>

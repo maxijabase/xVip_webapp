@@ -11,7 +11,6 @@ export const GET = async ({ url, cookies }) => {
       sameSite: 'lax',
       maxAge: 60 * 60 * 72 // 72 hours
     });
-    console.log("we're back, redirecting to", returnTo || '/');
     throw redirect(302, returnTo || '/');
   }
 
